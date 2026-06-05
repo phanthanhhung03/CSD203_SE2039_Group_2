@@ -14,6 +14,10 @@ public class TransactionNode {
         return data;
     }
 
+    public TransactionNode getNext(){
+        return next;
+    }
+    
     public void setData(Transaction data) {
         this.data = data;
     }

@@ -48,9 +48,22 @@ public class TransactionManagement {
             current = current.next; // Di chuyển tuần tự sang nút tiếp theo 
         }
         return snapshotArray;
+
     }
 
     public int getSize() {
         return size;
     }
+
+    // Display Transaction
+    public void displayTransaction() {
+        TransactionNode current = head;
+
+        while (current != null) {
+            Transaction transaction = current.getData();
+            System.out.println(transaction.toString());
+            current = current.getNext();
+        }
+    }
+    
 }
