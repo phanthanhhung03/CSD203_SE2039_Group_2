@@ -25,11 +25,11 @@ public class TransactionManagement {
         TransactionNode newNode = new TransactionNode(transaction);
 
         if (isEmpty()) {
-            // Trường hợp biên (Edge Case) xử lý khi danh sách rỗng [cite: 529, 642]
+            // Trường hợp biên (Edge Case) xử lý khi danh sách rỗng 
             head = newNode;
             tail = newNode;
         } else {
-            // Luồng xử lý thông thường: Nối đuôi cũ vào Node mới và dịch chuyển con trỏ tail [cite: 537]
+            // Luồng xử lý thông thường: Nối đuôi cũ vào Node mới và dịch chuyển con trỏ tail 
             tail.next = newNode;
             tail = newNode;
         }
@@ -45,7 +45,7 @@ public class TransactionManagement {
         while (current != null) {
             snapshotArray[index] = current.getData();
             index++;
-            current = current.next; // Di chuyển tuần tự sang nút tiếp theo [cite: 118]
+            current = current.next; // Di chuyển tuần tự sang nút tiếp theo 
         }
         return snapshotArray;
     }
