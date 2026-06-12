@@ -102,20 +102,18 @@ public class TransactionManagement {
     // Filter Transaction by Transaction Id
     public void filterTransactionById(String id) {
         TransactionNode currentNode = head;
-        boolean found = false;
-        
+
         while (currentNode != null) {
             Transaction transaction = currentNode.getData();
             if (transaction.getTransactionId().equalsIgnoreCase(id)) {
                 System.out.println(transaction.toString());
-                found = true;
+                return;
             }
             currentNode = currentNode.getNext();
         }
-        
-        if (!found) {
-            System.out.println("No transaction found with ID : " + id);
-        }
+
+        System.out.println("No transaction found with ID : " + id);
+
     }
 
     // Filter Transaction by Type
@@ -134,6 +132,25 @@ public class TransactionManagement {
 
         if (!found) {
             System.out.println("No transaction found with type :" + type);
+        }
+
+    }
+
+    // Filter Transaction by Account Number
+    public void filterTransactionByAccountNum(String accountNum) {
+        TransactionNode currentNode = head;
+        boolean found = false;
+        while (currentNode != null) {
+            Transaction transaction = currentNode.getData();
+            if (transaction.getAccountNumber().equalsIgnoreCase(accountNum)) {
+                System.out.println(transaction.toString());
+                found = true;
+            }
+            currentNode = currentNode.getNext();
+        }
+
+        if (!found) {
+            System.out.println("No transaction has been done with this account ! ");
         }
 
     }
