@@ -98,4 +98,44 @@ public class TransactionManagement {
         return false;
     }
     
+
+    // Filter Transaction by Transaction Id
+    public void filterTransactionById(String id) {
+        TransactionNode currentNode = head;
+        boolean found = false;
+        
+        while (currentNode != null) {
+            Transaction transaction = currentNode.getData();
+            if (transaction.getTransactionId().equalsIgnoreCase(id)) {
+                System.out.println(transaction.toString());
+                found = true;
+            }
+            currentNode = currentNode.getNext();
+        }
+        
+        if (!found) {
+            System.out.println("No transaction found with ID : " + id);
+        }
+    }
+
+    // Filter Transaction by Type
+    public void filterTransactionByType(String type) {
+        TransactionNode currentNode = head;
+        boolean found = false;
+
+        while (currentNode != null) {
+            Transaction transaction = currentNode.getData();
+            if (transaction.getType().equalsIgnoreCase(type)) {
+                System.out.println(transaction.toString());
+                found = true;
+            }
+            currentNode = currentNode.getNext();
+        }
+
+        if (!found) {
+            System.out.println("No transaction found with type :" + type);
+        }
+
+    }
+
 }
