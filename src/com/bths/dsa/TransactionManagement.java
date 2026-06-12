@@ -66,4 +66,36 @@ public class TransactionManagement {
         }
     }
     
+    // Deleting a transaction if occuring error system 
+    public boolean deleteFaultyTransaction(String transactionId) {
+        if (isEmpty())  return false;
+        
+        TransactionNode curr = head;
+        TransactionNode prev = null;
+        while (curr != null) {
+            if (curr.getData().getTransactionId().equalsIgnoreCase(transactionId)) {
+                // Head
+                if (curr == head) {
+                    head = head.next;
+                    // Empty list
+                    if (head == null)   tail = null;
+                }
+                // Middle
+                else {
+                    prev.next = curr.next;
+                    // Tail
+                    if (curr == tail) {
+                        tail = prev;
+                    }
+                }
+                size--;
+                return true;
+            }
+            
+            prev = curr;
+            curr = curr.next;
+        }
+        return false;
+    }
+    
 }

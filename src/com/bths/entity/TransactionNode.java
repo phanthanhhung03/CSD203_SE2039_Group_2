@@ -21,4 +21,5 @@ public class TransactionNode {
     public void setData(Transaction data) {
         this.data = data;
     }
+    
 }
