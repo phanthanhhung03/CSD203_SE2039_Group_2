@@ -1,7 +1,9 @@
 package com.bths.dsa;
 
+import com.bths.entity.Customer;
 import com.bths.entity.Transaction;
 import com.bths.entity.TransactionNode;
+import java.util.Map;
 
 public class TransactionManagement {
 
@@ -65,11 +67,13 @@ public class TransactionManagement {
             current = current.getNext();
         }
     }
-    
+
     // Deleting a transaction if occuring error system 
     public boolean deleteFaultyTransaction(String transactionId) {
-        if (isEmpty())  return false;
-        
+        if (isEmpty()) {
+            return false;
+        }
+
         TransactionNode curr = head;
         TransactionNode prev = null;
         while (curr != null) {
@@ -78,9 +82,10 @@ public class TransactionManagement {
                 if (curr == head) {
                     head = head.next;
                     // Empty list
-                    if (head == null)   tail = null;
-                }
-                // Middle
+                    if (head == null) {
+                        tail = null;
+                    }
+                } // Middle
                 else {
                     prev.next = curr.next;
                     // Tail
@@ -91,13 +96,12 @@ public class TransactionManagement {
                 size--;
                 return true;
             }
-            
+
             prev = curr;
             curr = curr.next;
         }
         return false;
     }
-    
 
     // Filter Transaction by Transaction Id
     public void filterTransactionById(String id) {
@@ -153,6 +157,43 @@ public class TransactionManagement {
             System.out.println("No transaction has been done with this account ! ");
         }
 
+    }
+
+    // Computing Net Balance
+    public void computeNetBalance(Map<String, Customer> customerMap) {
+        TransactionNode currentNode = head;
+        
+        while (currentNode != null) {
+            
+            Transaction t = currentNode.getData();
+            Customer customer = customerMap.get(t.getAccountNumber());
+
+            // If Customer Account Number not found
+            if (customer == null) {
+                System.out.println("[ERROR] Account not found: " + t.getAccountNumber());
+                currentNode = currentNode.getNext();
+                continue;
+            }
+
+            if (t.getType().equalsIgnoreCase("DEPOSIT")) {
+                customer.setBalance(customer.getBalance() + t.getAmount());
+
+            } else if (t.getType().equalsIgnoreCase("WITHDRAWAL")) {
+
+                // If customer account balance don't have enough money
+                if (customer.getBalance() < t.getAmount()) {
+                    System.out.println("[FAILED] Insufficient balance. " + "Transaction: " + t.getTransactionId());
+                    currentNode = currentNode.getNext();
+                    continue;
+                }
+
+                customer.setBalance(customer.getBalance() - t.getAmount());
+            }
+
+            currentNode = currentNode.getNext();
+            
+        }
+        
     }
 
 }
