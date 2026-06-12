@@ -6,7 +6,7 @@ public class Transaction {
     private String accountNumber;
     private double amount;
     private String type; // "DEPOSIT" hoặc "WITHDRAWAL"
-    private String timestamp;
+    private String timestamp; //YYYY-MM-DD HH:mm:ss
 
     // Constructor khởi tạo thông tin giao dịch
     public Transaction(String transactionId, String accountNumber, double amount, String type, String timestamp) {

@@ -3,7 +3,7 @@ package com.bths.main;
 import com.bths.dsa.TransactionManagement;
 import com.bths.entity.Transaction;
 
-
+//BANK TRANSACTION HITSTORY SYSTEM
 public class main {
 
     /**
@@ -22,10 +22,10 @@ public class main {
         System.out.println("Current ledger size: " + ledger.getSize());
 
         // Test tính năng lọc theo số tài khoản
-        //ledger.filterByAccountNumber("102345");
+        ledger.filterTransactionByAccountNum("102345");
 
-        //System.out.println("\n=== STAGE 2: DATA ERROR CORRECTION ===");
-        // Giả lập phát hiện giao dịch TX002 bị lỗi hệ thống và tiến hành ngắt kết nối vật lý
+        System.out.println("\n=== STAGE 2: DATA ERROR CORRECTION ===");
+        //Giả lập phát hiện giao dịch TX002 bị lỗi hệ thống và tiến hành ngắt kết nối vật lý
         System.out.println("Deleting faulty transaction TX002...");
         boolean isDeleted = ledger.deleteFaultyTransaction("TX002");
         System.out.println("Deletion status: " + (isDeleted ? "SUCCESS" : "FAILED"));
@@ -47,11 +47,18 @@ public class main {
             if (tx.getType().equals("DEPOSIT")) depositCount++;
             else if (tx.getType().equals("WITHDRAWAL")) withdrawalCount++;
         }
-
+        
         System.out.println("\n--- FINAL FINANCIAL AUDIT REPORT ---");
         System.out.printf("Total Transaction Volume Evaluated: %,.2f VND\n", totalVolume);
         System.out.println("Total Successful Deposits: " + depositCount);
         System.out.println("Total Successful Withdrawals: " + withdrawalCount);
+        
+        System.out.println("\n--- BEFORE IN-PLACE REVERSAL ---");
+        // Giả sử dùng hàm displayTransaction() sẵn có của em để in
+        ledger.displayTransaction(); 
+
+        System.out.println("\nExecuting In-place Single Linked List Reversal...");
+        ledger.displayReverseChronological();
     }
 
 }
