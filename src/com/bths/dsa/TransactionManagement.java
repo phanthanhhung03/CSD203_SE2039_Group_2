@@ -65,11 +65,13 @@ public class TransactionManagement {
             current = current.getNext();
         }
     }
-    
+
     // Deleting a transaction if occuring error system 
     public boolean deleteFaultyTransaction(String transactionId) {
-        if (isEmpty())  return false;
-        
+        if (isEmpty()) {
+            return false;
+        }
+
         TransactionNode curr = head;
         TransactionNode prev = null;
         while (curr != null) {
@@ -78,9 +80,10 @@ public class TransactionManagement {
                 if (curr == head) {
                     head = head.next;
                     // Empty list
-                    if (head == null)   tail = null;
-                }
-                // Middle
+                    if (head == null) {
+                        tail = null;
+                    }
+                } // Middle
                 else {
                     prev.next = curr.next;
                     // Tail
@@ -91,13 +94,12 @@ public class TransactionManagement {
                 size--;
                 return true;
             }
-            
+
             prev = curr;
             curr = curr.next;
         }
         return false;
     }
-    
 
     // Filter Transaction by Transaction Id
     public void filterTransactionById(String id) {
@@ -152,7 +154,23 @@ public class TransactionManagement {
         if (!found) {
             System.out.println("No transaction has been done with this account ! ");
         }
+    }
 
+    public void displayReverseChronological() {
+        if (isEmpty()) {
+            System.out.println("Ledger is empty.");
+            return;
+        }
+
+        // Chuyển chuỗi liên kết sang mảng tĩnh
+        Transaction[] snapshot = toArraySnapshot();
+
+        System.out.println("\n=== BANK LEDGER (REVERSE CHRONOLOGICAL ORDER) ===");
+        // Duyệt ngược từ cuối mảng về đầu mảng
+        for (int i = snapshot.length - 1; i >= 0; i--) {
+            System.out.println(snapshot[i]);
+        }
+        System.out.println("=================================================");
     }
 
 }
