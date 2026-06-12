@@ -1,6 +1,7 @@
 package com.bths.entity;
 
 public class Transaction {
+
     private String transactionId;
     private String accountNumber;
     private double amount;
@@ -17,15 +18,29 @@ public class Transaction {
     }
 
     // Các hàm Getter để hỗ trợ tìm kiếm và hiển thị dữ liệu sau này
-    public String getTransactionId() { return transactionId; }
-    public String getAccountNumber() { return accountNumber; }
-    public double getAmount() { return amount; }
-    public String getType() { return type; }
-    public String getTimestamp() { return timestamp; }
+    public final String getTransactionId() {
+        return transactionId;
+    }
+
+    public final String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public final double getAmount() {
+        return amount;
+    }
+
+    public final String getType() {
+        return type;
+    }
+
+    public final String getTimestamp() {
+        return timestamp;
+    }
 
     @Override
     public String toString() {
-        return String.format("| %-10s | %-12s | %-10.2f | %-10s | %-20s |", 
+        return String.format("ID: %s | Account: %s | Amount: %,.2f | Type: %s | Time: %s",
                 transactionId, accountNumber, amount, type, timestamp);
     }
 }
