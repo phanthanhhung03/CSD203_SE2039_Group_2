@@ -1,5 +1,6 @@
-package com.bths.entity;
+package com.bths.service;
 
+import com.bths.entity.Customer;
 import java.util.HashMap;
 
 public class CustomerManagement {

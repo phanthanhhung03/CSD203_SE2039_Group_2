@@ -1,4 +1,6 @@
-package com.bths.entity;
+package com.bths.dsa;
+
+import com.bths.entity.Transaction;
 
 public class TransactionNode {
 

@@ -1,8 +1,9 @@
-package com.bths.dsa;
+package com.bths.service;
 
+import com.bths.dsa.TransactionNode;
 import com.bths.entity.Customer;
 import com.bths.entity.Transaction;
-import com.bths.entity.TransactionNode;
+import com.bths.entity.TransactionType;
 import java.util.Map;
 
 public class TransactionManagement {
@@ -121,40 +122,49 @@ public class TransactionManagement {
     }
 
     // Filter Transaction by Type
-    public void filterTransactionByType(String type) {
+    public void filterTransactionByType(TransactionType type) {
         TransactionNode currentNode = head;
         boolean found = false;
 
         while (currentNode != null) {
             Transaction transaction = currentNode.getData();
-            if (transaction.getType().equalsIgnoreCase(type)) {
-                System.out.println(transaction.toString());
+
+            if (transaction.getType() == type) {
+                System.out.println(transaction);
                 found = true;
             }
+
             currentNode = currentNode.getNext();
         }
 
         if (!found) {
-            System.out.println("No transaction found with type :" + type);
+            System.out.println("No transaction found with type: " + type);
         }
-
     }
 
     // Filter Transaction by Account Number
     public void filterTransactionByAccountNum(String accountNum) {
         TransactionNode currentNode = head;
         boolean found = false;
+
         while (currentNode != null) {
+
             Transaction transaction = currentNode.getData();
-            if (transaction.getAccountNumber().equalsIgnoreCase(accountNum)) {
-                System.out.println(transaction.toString());
+
+            if ((transaction.getFromAccount() != null
+                    && transaction.getFromAccount().equalsIgnoreCase(accountNum))
+                    || (transaction.getToAccount() != null
+                    && transaction.getToAccount().equalsIgnoreCase(accountNum))) {
+
+                System.out.println(transaction);
                 found = true;
             }
+
             currentNode = currentNode.getNext();
         }
 
         if (!found) {
-            System.out.println("No transaction has been done with this account ! ");
+            System.out.println("No transaction has been done with this account!");
         }
     }
 
@@ -176,26 +186,4 @@ public class TransactionManagement {
     }
 
     // Computing Net Balance
-    public double computeNetBalance(String accountNum) {
-        TransactionNode current = head;
-        double netBalance = 0;
-        boolean hasTransaction = false;
-
-        while (current != null) {
-            if (current.getData().getAccountNumber().equalsIgnoreCase(accountNum)) {
-                hasTransaction = true;
-                if (current.getData().getType().equalsIgnoreCase("DEPOSIT")) {
-                    netBalance += current.getData().getAmount();
-                } else if (current.getData().getType().equalsIgnoreCase("WITHDRAWAL")) {
-                    netBalance -= current.getData().getAmount();
-                }
-            }
-            current = current.next;
-        }
-
-        if (!hasTransaction) {
-            System.out.println("⚠️ Account " + accountNum + " has no transaction history.");
-        }
-        return netBalance;
-    }
 }
