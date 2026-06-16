@@ -1,6 +1,6 @@
 package com.bths.main;
 
-import com.bths.dsa.TransactionManagement;
+import com.bths.service.TransactionManagement;
 import com.bths.entity.Transaction;
 
 //BANK TRANSACTION HITSTORY SYSTEM
