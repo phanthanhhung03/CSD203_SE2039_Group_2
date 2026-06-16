@@ -176,40 +176,26 @@ public class TransactionManagement {
     }
 
     // Computing Net Balance
-    public void computeNetBalance(Map<String, Customer> customerMap) {
-        TransactionNode currentNode = head;
-        
-        while (currentNode != null) {
-            
-            Transaction t = currentNode.getData();
-            Customer customer = customerMap.get(t.getAccountNumber());
+    public double computeNetBalance(String accountNum) {
+        TransactionNode current = head;
+        double netBalance = 0;
+        boolean hasTransaction = false;
 
-            // If Customer Account Number not found
-            if (customer == null) {
-                System.out.println("[ERROR] Account not found: " + t.getAccountNumber());
-                currentNode = currentNode.getNext();
-                continue;
-            }
-
-            if (t.getType().equalsIgnoreCase("DEPOSIT")) {
-                customer.setBalance(customer.getBalance() + t.getAmount());
-
-            } else if (t.getType().equalsIgnoreCase("WITHDRAWAL")) {
-
-                // If customer account balance don't have enough money
-                if (customer.getBalance() < t.getAmount()) {
-                    System.out.println("[FAILED] Insufficient balance. " + "Transaction: " + t.getTransactionId());
-                    currentNode = currentNode.getNext();
-                    continue;
+        while (current != null) {
+            if (current.getData().getAccountNumber().equalsIgnoreCase(accountNum)) {
+                hasTransaction = true;
+                if (current.getData().getType().equalsIgnoreCase("DEPOSIT")) {
+                    netBalance += current.getData().getAmount();
+                } else if (current.getData().getType().equalsIgnoreCase("WITHDRAWAL")) {
+                    netBalance -= current.getData().getAmount();
                 }
-
-                customer.setBalance(customer.getBalance() - t.getAmount());
             }
-
-            currentNode = currentNode.getNext();
-            
+            current = current.next;
         }
-        
-    }
 
+        if (!hasTransaction) {
+            System.out.println("⚠️ Account " + accountNum + " has no transaction history.");
+        }
+        return netBalance;
+    }
 }
