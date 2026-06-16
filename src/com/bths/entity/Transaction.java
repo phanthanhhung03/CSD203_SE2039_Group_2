@@ -10,11 +10,11 @@ public class Transaction {
     private String timestamp; // yyyy-MM-dd HH:mm:ss
 
     public Transaction(String transactionId,
-                       String fromAccount,
-                       String toAccount,
-                       double amount,
-                       TransactionType type,
-                       String timestamp) {
+            String fromAccount,
+            String toAccount,
+            double amount,
+            TransactionType type,
+            String timestamp) {
 
         this.transactionId = transactionId;
         this.fromAccount = fromAccount;
@@ -51,7 +51,7 @@ public class Transaction {
     @Override
     public String toString() {
         return String.format(
-                "ID: %s | From: %s | To: %s | Amount: %,.2f | Type: %s | Time: %s",
+                "%-8s | %-8s | %-8s | %12.2f | %-12s | %-19s",
                 transactionId,
                 fromAccount == null ? "-" : fromAccount,
                 toAccount == null ? "-" : toAccount,
@@ -59,5 +59,9 @@ public class Transaction {
                 type,
                 timestamp
         );
+    }
+
+    public void tableHeader() {
+        
     }
 }

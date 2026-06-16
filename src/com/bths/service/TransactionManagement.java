@@ -1,10 +1,8 @@
 package com.bths.service;
 
 import com.bths.dsa.TransactionNode;
-import com.bths.entity.Customer;
 import com.bths.entity.Transaction;
 import com.bths.entity.TransactionType;
-import java.util.Map;
 
 public class TransactionManagement {
 
@@ -60,6 +58,10 @@ public class TransactionManagement {
 
     // Display Transaction
     public void displayTransaction() {
+        if (this.isEmpty()) {
+            return;
+        }
+        printHeaderTable();
         TransactionNode current = head;
 
         while (current != null) {
@@ -177,12 +179,27 @@ public class TransactionManagement {
         // Chuyển chuỗi liên kết sang mảng tĩnh
         Transaction[] snapshot = toArraySnapshot();
 
-        System.out.println("\n=== BANK LEDGER (REVERSE CHRONOLOGICAL ORDER) ===");
+        System.out.println("\n               === BANK LEDGER (REVERSE CHRONOLOGICAL ORDER) ===");
+        printHeaderTable();
         // Duyệt ngược từ cuối mảng về đầu mảng
         for (int i = snapshot.length - 1; i >= 0; i--) {
             System.out.println(snapshot[i]);
         }
-        System.out.println("=================================================");
+        System.out.println("==================================================================================");
+    }
+
+    public void printHeaderTable() {
+        System.out.println(
+                "----------------------------------------------------------------------------------"
+        );
+        System.out.printf(
+                "%-8s | %-8s | %-8s | %12s | %-12s | %-19s%n",
+                "ID", "FROM", "TO", "AMOUNT", "TYPE", "TIMESTAMP"
+        );
+
+        System.out.println(
+                "----------------------------------------------------------------------------------"
+        );
     }
 
     // Computing Net Balance
