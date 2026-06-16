@@ -4,7 +4,12 @@ import com.bths.entity.Customer;
 import java.util.HashMap;
 
 public class CustomerManagement {
+    
     private HashMap<String ,Customer> customers;
+
+    public CustomerManagement() {
+        this.customers = new HashMap<>();
+    }
     
     public void addCustomer(Customer customer) {
         customers.put(customer.getAccountNumber(), customer);

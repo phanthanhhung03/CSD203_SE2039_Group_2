@@ -52,22 +52,39 @@ public class Customer {
     // public void setAccountNumber(String accountNumber) {
     //     this.accountNumber = accountNumber;
     // }
-
     public double getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     @Override
     public String toString() {
-        return "Customer{" +
-                "fullName='" + fullName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", balance=" + balance +
-                '}';
+        return "Customer{"
+                + "fullName='" + fullName + '\''
+                + ", phoneNumber='" + phoneNumber + '\''
+                + ", accountNumber='" + accountNumber + '\''
+                + ", balance=" + balance
+                + '}';
+    }
+
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
+
+        balance += amount;
+    }
+
+    public boolean withdraw(double amount) {
+
+        if (amount <= 0) {
+            return false;
+        }
+
+        if (balance < amount) {
+            return false;
+        }
+
+        balance -= amount;
+        return true;
     }
 }
