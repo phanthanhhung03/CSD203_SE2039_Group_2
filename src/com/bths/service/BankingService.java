@@ -2,6 +2,7 @@ package com.bths.service;
 
 import com.bths.entity.Customer;
 import com.bths.entity.Transaction;
+import com.bths.entity.TransactionStatus;
 import com.bths.entity.TransactionType;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,40 +30,62 @@ public class BankingService {
         return LocalDateTime.now().format(formatter);
     }
 
-    private void recordTransaction(String fromAccount, String toAccount, double amount, TransactionType type) {
-
+    private Transaction recordTransaction(String fromAccount, String toAccount, double amount, TransactionType type, TransactionStatus status) {
         Transaction transaction = new Transaction(
                 generateTransactionId(),
                 fromAccount,
                 toAccount,
                 amount,
                 type,
-                getCurrentTimestamp()
+                getCurrentTimestamp(),
+                status
         );
 
         transactionManagement.addLast(transaction);
+        return transaction;
     }
 
-    public boolean transfer(String fromAccount, String toAccount, double amount) {
+    private void recordFaultyTransaction(String fromAccount, String toAccount, double amount, TransactionType type) {
+        Transaction transaction = recordTransaction(
+                fromAccount,
+                toAccount,
+                amount,
+                type,
+                TransactionStatus.FAULTY
+        );
+
+        System.out.println(
+                "System error found at transaction ID: "
+                + transaction.getTransactionId()
+        );
+    }
+
+    public String transfer(String fromAccount, String toAccount, double amount, boolean systemHealthy) {
 
         Customer sender = customerManagement.findCustomer(fromAccount);
         Customer receiver = customerManagement.findCustomer(toAccount);
 
         // kiểm tra tài khoản tồn tại
         if (sender == null || receiver == null) {
-            return false;
+            return "Account not found!";
         }
 
         if (fromAccount.equalsIgnoreCase(toAccount)) {
-            return false;
+            return "Cannot transfer to the same account!";
         }
 
         if (amount <= 0) {
-            return false;
+            return "Amount must be greater than 0!";
+        }
+
+        // Simulate system failure
+        if (!systemHealthy) {
+            recordFaultyTransaction(fromAccount, toAccount, amount, TransactionType.TRANSFER);
+            return "System error occurred!";
         }
 
         if (!sender.withdraw(amount)) {
-            return false;
+            return "Insufficient balance!";
         }
 
         receiver.deposit(amount);
@@ -72,16 +95,22 @@ public class BankingService {
                 fromAccount,
                 toAccount,
                 amount,
-                TransactionType.TRANSFER
+                TransactionType.TRANSFER,
+                TransactionStatus.COMPLETED
         );
 
-        return true;
+        return "Transfer successfully!";
     }
 
-    public boolean withdraw(String accountNumber, double amount) {
+    public boolean withdraw(String accountNumber, double amount, boolean systemHealthy) {
         Customer account = customerManagement.findCustomer(accountNumber);
 
         if (account == null) {
+            return false;
+        }
+
+        if (!systemHealthy) {
+            recordFaultyTransaction(accountNumber, null, amount, TransactionType.WITHDRAWAL);
             return false;
         }
 
@@ -89,11 +118,11 @@ public class BankingService {
             return false;
         }
 
-        recordTransaction(accountNumber, null, amount, TransactionType.WITHDRAWAL);
+        recordTransaction(accountNumber, null, amount, TransactionType.WITHDRAWAL, TransactionStatus.COMPLETED);
         return true;
     }
 
-    public boolean deposit(String accountNumber, double amount) {
+    public boolean deposit(String accountNumber, double amount, boolean systemHealthy) {
         Customer account = customerManagement.findCustomer(accountNumber);
 
         if (account == null) {
@@ -104,8 +133,13 @@ public class BankingService {
             return false;
         }
 
+        if (!systemHealthy) {
+            recordFaultyTransaction(null, accountNumber, amount, TransactionType.DEPOSIT);
+            return false;
+        }
+
         account.deposit(amount);
-        recordTransaction(null, accountNumber, amount, TransactionType.DEPOSIT);
+        recordTransaction(null, accountNumber, amount, TransactionType.DEPOSIT, TransactionStatus.COMPLETED);
         return true;
     }
 }

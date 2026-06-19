@@ -8,13 +8,16 @@ public class Transaction {
     private double amount;
     private TransactionType type;
     private String timestamp; // yyyy-MM-dd HH:mm:ss
+    private TransactionStatus status;
 
-    public Transaction(String transactionId,
+    public Transaction(
+            String transactionId,
             String fromAccount,
             String toAccount,
             double amount,
             TransactionType type,
-            String timestamp) {
+            String timestamp,
+            TransactionStatus status) {
 
         this.transactionId = transactionId;
         this.fromAccount = fromAccount;
@@ -22,6 +25,7 @@ public class Transaction {
         this.amount = amount;
         this.type = type;
         this.timestamp = timestamp;
+        this.status = status;
     }
 
     public String getTransactionId() {
@@ -48,20 +52,25 @@ public class Transaction {
         return timestamp;
     }
 
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return String.format(
-                "%-8s | %-8s | %-8s | %12.2f | %-12s | %-19s",
+                "%-8s | %-8s | %-8s | %12.2f | %-12s | %-10s | %-19s",
                 transactionId,
                 fromAccount == null ? "-" : fromAccount,
                 toAccount == null ? "-" : toAccount,
                 amount,
                 type,
+                status,
                 timestamp
         );
-    }
-
-    public void tableHeader() {
-        
     }
 }
