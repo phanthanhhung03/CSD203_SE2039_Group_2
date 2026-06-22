@@ -123,6 +123,10 @@ public class StaffService {
             System.out.println("No transaction has been done with this account!");
         }
     }
+    public void displayTransactionsInReverseOrder(){
+        printHeaderTable();
+        transactionManagement.traverseBackward();
+    }
 
     public void printHeaderTable() {
         System.out.println(

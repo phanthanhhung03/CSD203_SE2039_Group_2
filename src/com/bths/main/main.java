@@ -84,6 +84,7 @@ public class main {
             System.out.println("7. Count Completed Transactions");
             System.out.println("8. Count Faulty Transactions");
             System.out.println("9. Mark Transaction As Faulty");
+            System.out.println("10. View Transactions in Reverse Order ");
             System.out.println("0. Back");
 
             System.out.print("Your choice: ");
@@ -200,6 +201,9 @@ public class main {
                         );
                     }
 
+                    break;
+                case 10:
+                    staffService.displayTransactionsInReverseOrder();
                     break;
             }
 
