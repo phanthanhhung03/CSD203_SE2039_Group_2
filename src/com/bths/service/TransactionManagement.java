@@ -57,14 +57,13 @@ public class TransactionManagement {
         return null;
     }
 
-    
     // Reverse transaction
-    public void traverseBackward(){
+    public void traverseBackward() {
         TransactionNode currentNode = tail;
-        while(currentNode != null){
+        while (currentNode != null) {
             System.out.println(currentNode.getData().toString());
             currentNode = currentNode.getPrev();
         }
     }
-    // Computing Net Balance
+
 }
