@@ -1,6 +1,6 @@
 package com.bths.service;
 
-import com.bths.dsa.TransactionNode;
+import com.bths.entity.TransactionNode;
 import com.bths.entity.Customer;
 import com.bths.entity.Transaction;
 import com.bths.entity.TransactionStatus;

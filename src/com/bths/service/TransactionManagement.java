@@ -1,6 +1,6 @@
 package com.bths.service;
 
-import com.bths.dsa.TransactionNode;
+import com.bths.entity.TransactionNode;
 import com.bths.entity.Transaction;
 
 public class TransactionManagement {
