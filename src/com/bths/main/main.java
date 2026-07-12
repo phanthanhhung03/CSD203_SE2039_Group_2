@@ -25,21 +25,31 @@ public class main {
 
         CustomerService customerService = new CustomerService(customerManagement, transactionManagement);
 
-        Customer c1 = new Customer("Nguyen Van A", "0901234567", 10000);
-        Customer c2 = new Customer("Tran Thi B", "0902345678", 8000);
-        Customer c3 = new Customer("Le Van C", "0903456789", 5000);
+        // 1. Nạp dữ liệu từ file khi khởi động
+        com.bths.util.FileService.loadCustomers(customerManagement, "customers.txt");
+        com.bths.util.FileService.loadTransactions(transactionManagement, "transactions.txt");
 
-        customerManagement.addCustomer(c1);
-        customerManagement.addCustomer(c2);
-        customerManagement.addCustomer(c3);
+        // 2. Nếu danh sách trống thì mới khởi tạo dữ liệu mẫu (chỉ chạy lần đầu)
+        if (customerManagement.getCustomers().isEmpty()) {
+            Customer c1 = new Customer("Nguyen Van A", "0901234567", 10000);
+            Customer c2 = new Customer("Tran Thi B", "0902345678", 8000);
+            Customer c3 = new Customer("Le Van C", "0903456789", 5000);
 
-        bankingService.deposit("BK001", 2000, true);
-        bankingService.withdraw("BK002", 1000, true);
-        bankingService.transfer("BK001", "BK003", 1500, true);
+            customerManagement.addCustomer(c1);
+            customerManagement.addCustomer(c2);
+            customerManagement.addCustomer(c3);
 
-        bankingService.transfer("BK001", "BK002", 500, false);
-        bankingService.deposit("BK003", 1000, false);
-        bankingService.withdraw("BK001", 300, false);
+            bankingService.deposit("BK001", 2000, true);
+            bankingService.withdraw("BK002", 1000, true);
+            bankingService.transfer("BK001", "BK003", 1500, true);
+
+            bankingService.transfer("BK001", "BK002", 500, false);
+            bankingService.deposit("BK003", 1000, false);
+            bankingService.withdraw("BK001", 300, false);
+            
+            // Lưu dữ liệu mẫu vào file để các lần chạy sau không bị trống
+            com.bths.util.FileService.saveCustomers(customerManagement, "customers.txt");
+        }
 
         Scanner sc = new Scanner(System.in);
         int choice;
@@ -67,6 +77,9 @@ public class main {
             }
 
         } while (choice != 0);
+
+        // 3. Sao lưu lại danh sách khách hàng trước khi thoát chương trình
+        com.bths.util.FileService.saveCustomers(customerManagement, "customers.txt");
     }
 
     public static void staffMenu(Scanner sc, StaffService staffService, TransactionManagement transactionManagement) {
