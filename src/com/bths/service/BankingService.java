@@ -23,6 +23,12 @@ public class BankingService {
         return String.format("TX%03d", nextTransactionId++);
     }
 
+    public static void updateNextTransactionId(int id) {
+        if (id >= nextTransactionId) {
+            nextTransactionId = id + 1;
+        }
+    }
+
     private String getCurrentTimestamp() {
         DateTimeFormatter formatter
                 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -42,6 +48,12 @@ public class BankingService {
         );
 
         transactionManagement.addLast(transaction);
+        
+        // Lưu giao dịch theo thời gian thực
+        com.bths.util.FileService.appendTransaction(transaction, "transactions.txt");
+        // Cập nhật file danh sách khách hàng vì số dư có thể thay đổi
+        com.bths.util.FileService.saveCustomers(customerManagement, "customers.txt");
+        
         return transaction;
     }
 
