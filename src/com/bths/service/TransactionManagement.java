@@ -1,6 +1,6 @@
 package com.bths.service;
 
-import com.bths.dsa.TransactionNode;
+import com.bths.entity.TransactionNode;
 import com.bths.entity.Transaction;
 
 public class TransactionManagement {
@@ -45,6 +45,10 @@ public class TransactionManagement {
         return head;
     }
 
+    public TransactionNode getTail() {
+        return tail;
+    }
+
     // Find transaction by id
     public Transaction findTransaction(String transactionId) {
         TransactionNode curr = head;
@@ -57,7 +61,7 @@ public class TransactionManagement {
         return null;
     }
 
-    // Reverse transaction
+    // Reverse transaction for Staff
     public void traverseBackward() {
         TransactionNode currentNode = tail;
         while (currentNode != null) {
@@ -65,5 +69,6 @@ public class TransactionManagement {
             currentNode = currentNode.getPrev();
         }
     }
+
 
 }

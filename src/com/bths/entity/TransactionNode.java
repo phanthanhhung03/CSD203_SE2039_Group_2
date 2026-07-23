@@ -1,4 +1,4 @@
-package com.bths.dsa;
+package com.bths.entity;
 
 import com.bths.entity.Transaction;
 

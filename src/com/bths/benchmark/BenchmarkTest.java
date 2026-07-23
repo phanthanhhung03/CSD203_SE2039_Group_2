@@ -1,6 +1,6 @@
 package com.bths.benchmark;
 
-import com.bths.dsa.TransactionNode;
+import com.bths.entity.TransactionNode;
 import com.bths.entity.Transaction;
 import com.bths.entity.TransactionStatus;
 import com.bths.entity.TransactionType;
