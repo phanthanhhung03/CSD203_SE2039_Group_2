@@ -28,6 +28,22 @@ public class Customer {
         this.balance = balance;
     }
 
+    // Cho phép nhập accountNumber (dùng khi load từ file)
+    public Customer(String fullName, String phoneNumber, String accountNumber, double balance) {
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+        this.accountNumber = accountNumber;
+        this.balance = balance;
+        try {
+            int id = Integer.parseInt(accountNumber.replace("BK", ""));
+            if (id >= nextId) {
+                nextId = id + 1;
+            }
+        } catch (NumberFormatException e) {
+            // Ignore if parsing fails
+        }
+    }
+
     public String getFullName() {
         return fullName;
     }

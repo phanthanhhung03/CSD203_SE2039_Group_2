@@ -29,4 +29,8 @@ public class CustomerManagement {
         }
     }
     
+    public java.util.Map<String, Customer> getCustomers() {
+        return customers;
+    }
+    
 }
