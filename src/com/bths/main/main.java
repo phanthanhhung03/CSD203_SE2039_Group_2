@@ -46,7 +46,7 @@ public class main {
             bankingService.transfer("BK001", "BK002", 500, false);
             bankingService.deposit("BK003", 1000, false);
             bankingService.withdraw("BK001", 300, false);
-            
+
             // Lưu dữ liệu mẫu vào file để các lần chạy sau không bị trống
             com.bths.util.FileService.saveCustomers(customerManagement, "customers.txt");
         }
@@ -63,7 +63,8 @@ public class main {
             System.out.println("2. Customer");
             System.out.println("0. Exit");
 
-            choice = Integer.parseInt(sc.nextLine());
+            Integer input = readIntOrCancel(sc, "Your choice: ");
+            choice = (input == null) ? -1 : input;
 
             switch (choice) {
 
@@ -78,7 +79,7 @@ public class main {
 
         } while (choice != 0);
 
-        // 3. Sao lưu lại danh sách khách hàng trước khi thoát chương trình
+        //  Sao lưu lại danh sách khách hàng trước khi thoát chương trình
         com.bths.util.FileService.saveCustomers(customerManagement, "customers.txt");
     }
 
@@ -98,10 +99,16 @@ public class main {
             System.out.println("8. Count Faulty Transactions");
             System.out.println("9. Mark Transaction As Faulty");
             System.out.println("10. View Transactions in Reverse Order ");
-            System.out.println("0. Back");
+            System.out.println("0. Back (or type Q)");
 
-            System.out.print("Your choice: ");
-            choice = Integer.parseInt(sc.nextLine());
+            Integer input = readIntOrCancel(sc, "Your choice: ");
+
+            if (input == null) {
+                // Q -> thoát menu này, quay lại menu trước đó
+                return;
+            }
+
+            choice = input;
 
             switch (choice) {
 
@@ -120,8 +127,12 @@ public class main {
                     break;
 
                 case 4:
-                    System.out.print("Enter transaction ID: ");
-                    String txId = sc.nextLine();
+                    String txId = readLineOrCancel(sc, "Enter transaction ID (or Q to cancel): ");
+
+                    if (txId == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     Transaction tx
                             = transactionManagement.findTransaction(txId);
@@ -140,8 +151,13 @@ public class main {
                     System.out.println("2. Withdrawal");
                     System.out.println("3. Transfer");
 
-                    int typeChoice
-                            = Integer.parseInt(sc.nextLine());
+                    Integer typeChoice
+                            = readIntOrCancel(sc, "Your choice (or Q to cancel): ");
+
+                    if (typeChoice == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     TransactionType type = null;
 
@@ -159,14 +175,20 @@ public class main {
 
                     if (type != null) {
                         staffService.filterTransactionByType(type);
+                    } else {
+                        System.out.println("Invalid type choice.");
                     }
 
                     break;
 
                 case 6:
 
-                    System.out.print("Enter account number: ");
-                    String account = sc.nextLine();
+                    String account = readLineOrCancel(sc, "Enter account number (or Q to cancel): ");
+
+                    if (account == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     staffService.filterTransactionByAccountNum(account);
 
@@ -194,11 +216,12 @@ public class main {
 
                 case 9:
 
-                    System.out.print(
-                            "Enter transaction ID: "
-                    );
+                    String faultyId = readLineOrCancel(sc, "Enter transaction ID (or Q to cancel): ");
 
-                    String faultyId = sc.nextLine();
+                    if (faultyId == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     if (staffService.markTransactionAsFaulty(
                             faultyId)) {
@@ -225,12 +248,12 @@ public class main {
 
     public static void customerMenu(Scanner sc, CustomerService customerService, BankingService bankingService) {
 
-        System.out.print(
-                "Enter Account Number: "
-        );
+        String accountNumber = readLineOrCancel(sc, "Enter Account Number (or Q to cancel): ");
 
-        String accountNumber
-                = sc.nextLine();
+        if (accountNumber == null) {
+            System.out.println("Cancelled.");
+            return;
+        }
 
         if (customerService.viewProfile(
                 accountNumber) == null) {
@@ -275,15 +298,21 @@ public class main {
             );
 
             System.out.println(
-                    "0. Back"
+                    "7. View My Transactions (Newest)"
             );
 
-            System.out.print(
-                    "Your choice: "
+            System.out.println(
+                    "0. Back (or type Q)"
             );
 
-            choice
-                    = Integer.parseInt(sc.nextLine());
+            Integer input = readIntOrCancel(sc, "Your choice: ");
+
+            if (input == null) {
+                // Q -> thoát menu này, quay lại menu trước đó
+                return;
+            }
+
+            choice = input;
 
             switch (choice) {
 
@@ -308,13 +337,13 @@ public class main {
 
                 case 3:
 
-                    System.out.print(
-                            "Enter amount: "
-                    );
+                    Double depositAmount
+                            = readDoubleOrCancel(sc, "Enter amount (or Q to cancel): ");
 
-                    double depositAmount
-                            = Double.parseDouble(
-                                    sc.nextLine());
+                    if (depositAmount == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     boolean depositResult = bankingService.deposit(
                             accountNumber,
@@ -332,13 +361,13 @@ public class main {
 
                 case 4:
 
-                    System.out.print(
-                            "Enter amount: "
-                    );
+                    Double withdrawAmount
+                            = readDoubleOrCancel(sc, "Enter amount (or Q to cancel): ");
 
-                    double withdrawAmount
-                            = Double.parseDouble(
-                                    sc.nextLine());
+                    if (withdrawAmount == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     boolean withdrawResult
                             = bankingService.withdraw(
@@ -357,12 +386,20 @@ public class main {
 
                 case 5:
 
-                    System.out.print("Enter receiver account: ");
-                    String receiver = sc.nextLine();
+                    String receiver = readLineOrCancel(sc, "Enter receiver account (or Q to cancel): ");
 
-                    System.out.print("Enter amount: ");
-                    double transferAmount
-                            = Double.parseDouble(sc.nextLine());
+                    if (receiver == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
+
+                    Double transferAmount
+                            = readDoubleOrCancel(sc, "Enter amount (or Q to cancel): ");
+
+                    if (transferAmount == null) {
+                        System.out.println("Cancelled.");
+                        break;
+                    }
 
                     String result = bankingService.transfer(
                             accountNumber,
@@ -383,9 +420,66 @@ public class main {
                             );
 
                     break;
+
+                case 7:
+
+                    customerService
+                            .viewMyTransactionsReversed(
+                                    accountNumber
+                            );
+
+                    break;
             }
 
         } while (choice != 0);
     }
 
+    // Đọc số nguyên an toàn. Gõ "Q" để hủy thao tác / quay lại menu trước đó.
+    // Trả về null nếu người dùng gõ Q -> nơi gọi phải tự xử lý trường hợp null.
+    private static Integer readIntOrCancel(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim();
+
+            if (input.equalsIgnoreCase("Q")) {
+                return null;
+            }
+
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number, or Q to cancel.");
+            }
+        }
+    }
+
+    // Đọc số thực an toàn. Gõ "Q" để hủy thao tác / quay lại menu trước đó.
+    private static Double readDoubleOrCancel(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim();
+
+            if (input.equalsIgnoreCase("Q")) {
+                return null;
+            }
+
+            try {
+                return Double.parseDouble(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number, or Q to cancel.");
+            }
+        }
+    }
+
+    // Đọc chuỗi. Gõ "Q" để hủy thao tác / quay lại menu trước đó (trả về null).
+    private static String readLineOrCancel(Scanner sc, String prompt) {
+        System.out.print(prompt);
+        String input = sc.nextLine().trim();
+
+        if (input.equalsIgnoreCase("Q")) {
+            return null;
+        }
+
+        return input;
+    }
 }

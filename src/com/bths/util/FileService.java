@@ -65,7 +65,7 @@ public class FileService {
      */
     public static void saveAllTransactions(TransactionManagement transactionManagement, String filePath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            com.bths.dsa.TransactionNode curr = transactionManagement.getHead();
+            com.bths.entity.TransactionNode curr = transactionManagement.getHead();
             while (curr != null) {
                 Transaction t = curr.getData();
                 writer.write(t.getTransactionId() + "," + t.getFromAccount() + "," + t.getToAccount() + "," + 

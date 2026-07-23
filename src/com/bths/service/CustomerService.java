@@ -69,7 +69,7 @@ public class CustomerService {
 
         while (current != null) {
 
-            Transaction transaction  = current.getData();
+            Transaction transaction = current.getData();
             if ((accountNumber.equalsIgnoreCase(transaction.getFromAccount()))
                     || (accountNumber.equalsIgnoreCase(transaction.getToAccount()))) {
 
@@ -81,4 +81,33 @@ public class CustomerService {
         return count;
     }
 
+    public void viewMyTransactionsReversed(String accountNumber) {
+
+        TransactionNode current = transactionManagement.getTail();
+
+        boolean found = false;
+
+        while (current != null) {
+
+            Transaction transaction = current.getData();
+
+            if ((transaction.getFromAccount() != null
+                    && transaction.getFromAccount().equalsIgnoreCase(accountNumber))
+                    || (transaction.getToAccount() != null
+                    && transaction.getToAccount().equalsIgnoreCase(accountNumber))
+                    && transaction.getStatus() == TransactionStatus.COMPLETED) {
+
+                System.out.println(transaction);
+                found = true;
+            }
+
+            current = current.getPrev();
+        }
+
+        if (!found) {
+            System.out.println(
+                    "No transaction found."
+            );
+        }
+    }
 }
